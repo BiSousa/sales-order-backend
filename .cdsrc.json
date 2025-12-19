@@ -1,11 +1,11 @@
 {
     "[development]":{
         "requires":{
-            "db":{
+            "db":{   
+                "kind": "sqlite",
                 "credentials": {
                     "database": "memory:"
-                },
-                "kind": "sqlite"
+                }
             }
         }
     }
