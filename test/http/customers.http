@@ -16,8 +16,12 @@ Content-Type: application/json
     "email": "biacsousa72@gmail.com"
 }
 
+###
+
 DELETE http://{{localhost}}/Customers(id={{id}})
 Content-Type: application/json
+
+###
 
 // faz uma atualização parcial
 PATCH http://{{localhost}}/Customers(id={{id}})
