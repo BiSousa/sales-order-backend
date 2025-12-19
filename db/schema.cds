@@ -1,11 +1,11 @@
 // fazendo importação
-using {} from '@sap/cds/common';
+using { managed } from '@sap/cds/common';
 
 // identificador das entidades
 namespace sales;
 
-// entidade e atributos
-entity SalesOrderHeaders{
+// entidade e atributos, implementando o aspect
+entity SalesOrderHeaders: managed{
     // PK
     key id: UUID;
 }
