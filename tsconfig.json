@@ -1,0 +1,27 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // ao transpilar o código faz com que ele fique compatível com esse ECMA
+    "target": "es2024",
+    // como o código vai ser gerado
+    "module": "node16",
+    // como o código vai se comportar na importação
+    "moduleResolution": "node16",
+    // tenta garantir que o programa esteja totalmente correto
+    "strict": true,
+    // faz a verificação se é nulo
+    "strictNullChecks": true,
+    // não permite que fique sem tipagem
+    "noImplicitAny": true,
+    // simplifica na importação de arquivos
+    "esModuleInterop": true,
+    // para onde o código transpilado vai
+    "outDir": "./dist",
+    "baseUrl": "./",
+    // qual a pasta inicial
+    "rootDir": "./"
+  },
+  // quais pastas são relevantes no seu projeto
+  "include": ["srv"],
+  "exclude": ["node_modules"]
+}
