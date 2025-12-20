@@ -52,3 +52,21 @@ Content-Type: application/json
 // pegar os TotalAmount maior ou igual a x valor
 GET http://{{localhost}}/SalesOrderHeaders?$filter=totalAmount ge 2000000
 Content-Type: application/json
+
+###
+
+// expandindo os items
+GET http://{{localhost}}/SalesOrderHeaders?$expand=items
+Content-Type: application/json
+
+###
+
+// expansão dupla
+GET http://{{localhost}}/SalesOrderHeaders?$expand=items,customer
+Content-Type: application/json
+
+###
+
+// selecionar somente customer e id do sales order header
+GET http://{{localhost}}/SalesOrderHeaders?$select=id,customer&$expand=customer($select=email)
+Content-Type: application/json
