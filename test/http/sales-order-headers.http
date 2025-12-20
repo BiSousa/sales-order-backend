@@ -18,17 +18,17 @@ Content-Type: application/json
     "items": [
         {
             "id": "4105a378-05e3-4602-a608-85230486ab78",
-            "header": "{{id}}",
+            "header_id": "{{id}}",
             "product_id": "{{productId}}",
             "quantity": 10,
-            "price": 2.99,
+            "price": 2.99
         },
         {
             "id": "4105a378-05e3-4602-a608-85230486ab79",
-            "header": "{{id}}",
+            "header_id": "{{id}}",
             "product_id": "{{productId}}",
             "quantity": 5,
-            "price": 1.99,
+            "price": 1.99
         }
     ]
 }
