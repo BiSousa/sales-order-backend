@@ -19,7 +19,11 @@
     "outDir": "./dist",
     "baseUrl": "./",
     // qual a pasta inicial
-    "rootDir": "./"
+    "rootDir": "./",
+    // criação de alias
+    "paths": {
+      "@models/*": ["./@cds-models/*/index.ts"]
+    }
   },
   // quais pastas são relevantes no seu projeto
   "include": ["srv"],
