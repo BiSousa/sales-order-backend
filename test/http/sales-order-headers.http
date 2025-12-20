@@ -46,3 +46,9 @@ Content-Type: application/json
 {
     "modifiedBy": "teste"
 }
+
+###
+
+// pegar os TotalAmount maior ou igual a x valor
+GET http://{{localhost}}/SalesOrderHeaders?$filter=totalAmount ge 2000000
+Content-Type: application/json
