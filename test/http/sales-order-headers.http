@@ -6,11 +6,13 @@
 
 GET http://{{localhost}}/SalesOrderHeaders
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 ###
 
 POST http://{{localhost}}/SalesOrderHeaders
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 {
     "id": "{{id}}",
@@ -38,11 +40,13 @@ Content-Type: application/json
 
 DELETE http://{{localhost}}/SalesOrderHeaders(id={{id}})
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 ###
 
 PUT http://{{localhost}}/SalesOrderHeaders(id={{id}})
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 {
     "modifiedBy": "teste"
@@ -53,39 +57,46 @@ Content-Type: application/json
 // pegar os TotalAmount maior ou igual a x valor
 GET http://{{localhost}}/SalesOrderHeaders?$filter=totalAmount ge 2000000
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 ###
 
 // expandindo os items
 GET http://{{localhost}}/SalesOrderHeaders?$expand=items
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 ###
 
 // expansão dupla
 GET http://{{localhost}}/SalesOrderHeaders?$expand=items,customer
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 ###
 
 // selecionar somente customer e id do sales order header
 GET http://{{localhost}}/SalesOrderHeaders?$select=id,customer&$expand=customer($select=email)
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 ###
 
 // descobrindo a quantidade de registros
 GET http://{{localhost}}/SalesOrderHeaders/$count
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 ###
 
 // paginando os registros
 GET http://{{localhost}}/SalesOrderHeaders?$skip=0&$top=5
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
 
 ###
 
 // buscando dados com search
 GET http://{{localhost}}/SalesOrderHeaders?$search=example.net
 Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
