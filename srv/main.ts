@@ -1,5 +1,5 @@
-import { Service } from '@sap/cds';
-import { Customers } from '@models/sales';
+import cds, { Request, Service } from '@sap/cds';
+import { Customers, Products, SalesOrderHeader, SalesOrderItem, SalesOrderItems } from '@models/sales';
 
 export default (service: Service) => {
     service.after('READ', 'Customers', (results: Customers) => {
@@ -9,5 +9,44 @@ export default (service: Service) => {
             }
         })
     });
+
+    service.before('CREATE', 'SalesOrderHeaders', async (request: Request) => {
+        const params = request.data;
+        const items: SalesOrderItems = params.items;
+        console.log(params);
+        // se não tiver parâmetros
+        if(!params.customer_id){
+            return request.reject(400, 'Customer inválido');
+        }
+        if(!params.items || params.items?.length === 0){
+            return request.reject(400, 'Items inválidos');
+        }
+
+        // quer saber se o customer já existe na base de dados
+        const customerQuery = SELECT.one.from('sales.Customers').where({id: params.customer_id});
+        const customer = await cds.run(customerQuery);
+        if(!customer){
+            return request.reject(404, 'Customer não encontrado');
+        }
+
+        // pega os produtos do banco
+        const productsIds: string[] = params.items.map((item: SalesOrderItem) => item.product_id);
+        const productQuery = SELECT.from('sales.Products').where({id: productsIds});
+        const products: Products = await cds.run(productQuery);
+        for(const item of items){
+            const dbProduct = products.find(product => product.id === item.product_id);
+        
+            if(!dbProduct){
+                return request.reject(404, `Produto ${item.product_id} não encontrado`);
+            }
+
+            if(dbProduct.stock === 0){
+                return request.reject(400, `Produto ${dbProduct.name} (${dbProduct.id}) sem estoque disponível`);
+            }
+        }
+        
+        
+        
+    });  
 }
 
