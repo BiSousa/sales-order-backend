@@ -1,5 +1,5 @@
 import cds, { Request, Service } from '@sap/cds';
-import { Customers, Products, SalesOrderHeader, SalesOrderItem, SalesOrderItems } from '@models/sales';
+import { Customers, Products, SalesOrderHeader, SalesOrderHeaders, SalesOrderItem, SalesOrderItems } from '@models/sales';
 
 export default (service: Service) => {
     service.after('READ', 'Customers', (results: Customers) => {
@@ -45,8 +45,26 @@ export default (service: Service) => {
             }
         }
         
-        
-        
+    });
+    service.after('CREATE', 'SalesOrderHeaders', async (results: SalesOrderHeaders) => {
+        const headersAsArray = Array.isArray(results) ? results : [results] as SalesOrderHeaders;
+
+        for(const header of headersAsArray){
+            const items = header.items as SalesOrderItems;
+
+            const productsData = items.map(item => ({
+                id: item.product_id as string,
+                quantity: item.quantity as number
+            }));
+            const productsIds: string[] = productsData.map((productData) => productData.id);
+            const productQuery = SELECT.from('sales.Products').where({id: productsIds});
+            const products: Products = await cds.run(productQuery);
+            for(const productData of productsData){
+                const foundProduct = products.find(product => product.id === productData.id) as Product;
+                foundProduct.stock = (foundProduct.stock as number) - productData.quantity;
+                await cds.update('sales.Products').where({id: foundProduct.id}).with({stock: foundProduct.stock});
+            }   
+        }
     });  
 }
 
