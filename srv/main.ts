@@ -1,5 +1,7 @@
 import cds, { Request, Service } from '@sap/cds';
 import { Customers, Products, SalesOrderHeader, SalesOrderHeaders, SalesOrderItem, SalesOrderItems } from '@models/sales';
+import { customerController } from './factories/controllers/customer';
+import {FullRequestParams} from './protocols';
 
 export default (service: Service) => {
     service.before('READ', '*', (request: Request) => {
@@ -14,12 +16,14 @@ export default (service: Service) => {
         }
     });
 
-    service.after('READ', 'Customers', (results: Customers) => {
-        results.forEach(customer => {
-            if (!customer.email?.includes('@')){
-                customer.email = `${customer.email}@gmail.com`;
-            }
-        })
+    service.after('READ', 'Customers', (customersList: Customers, request) => {
+        (request as unknown as FullRequestParams<Customers>).results = customerController.afterRead(customersList);
+        
+        //results.forEach(customer => {
+        //    if (!customer.email?.includes('@')){
+        //        customer.email = `${customer.email}@gmail.com`;
+        //    }
+        //})
     });
 
     service.before('CREATE', 'SalesOrderHeaders', async (request: Request) => {
@@ -83,7 +87,7 @@ export default (service: Service) => {
             const productQuery = SELECT.from('sales.Products').where({id: productsIds});
             const products: Products = await cds.run(productQuery);
             for(const productData of productsData){
-                const foundProduct = products.find(product => product.id === productData.id) as Product;
+                const foundProduct = products.find(product => product.id === productData.id) as Products[number];
                 foundProduct.stock = (foundProduct.stock as number) - productData.quantity;
                 await cds.update('sales.Products').where({id: foundProduct.id}).with({stock: foundProduct.stock});
             }   
