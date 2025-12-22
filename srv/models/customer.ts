@@ -1,4 +1,4 @@
-type CustomerProps = {
+export type CustomerProps = {
     id: string;
     firstName: string;
     lastName: string;
@@ -8,7 +8,8 @@ type CustomerProps = {
 export class CustomerModel{
     constructor(private props: CustomerProps){}
 
-    public static create(props:CustomerProps){
+    // retorno de um CustomerModel com essas propriedades
+    public static with(props:CustomerProps){
         return new CustomerModel(props);
     }
 
