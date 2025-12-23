@@ -1,24 +1,38 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import prettier from 'eslint-plugin-prettier';
+import tseslint from 'typescript-eslint';
 
 export default [
     {
         languageOptions: {
-            globals: globals.node 
+            globals: globals.node
         }
     },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
     {
-        ignores: ['./gen/*.(js,ts)'],
-        files: ['**/*.(mjs, js, ts)'],
+        ignores: ['./gen/*.{js,ts}'],
+        files: ['**/*.{mjs,js,ts}'],
+        plugins: {
+            prettier
+        },
         rules: {
-            '@typescript-eslint/no-unused-vars':[
+            'prettier/prettier': [
+                'error',
+                {
+                    singleQuote: true,
+                    tabWidth: 4,
+                    trailingComma: 'none',
+                    bracketSpacing: true,
+                    printWidth: 120
+                }
+            ],
+            '@typescript-eslint/no-unused-vars': [
                 'error',
                 {
                     caughtErrors: 'all',
-                    caughtErrorsIgnorePattern: 'ignore',
+                    caughtErrorsIgnorePattern: '^ignore',
                     ignoreRestSiblings: true
                 }
             ],
@@ -33,7 +47,7 @@ export default [
             'max-len': ['error', 120],
             'max-lines-per-function': ['error', 30],
             'object-curly-spacing': ['error', 'always'],
-            quotes: ['errors', 'single'],
+            quotes: ['error', 'single'],
             'quote-props': ['error', 'as-needed'],
             semi: ['error', 'always'],
             'sort-imports': [
@@ -45,4 +59,4 @@ export default [
             ]
         }
     }
-]
+];

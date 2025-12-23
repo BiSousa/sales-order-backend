@@ -1,28 +1,27 @@
-import { SalesOrderItemModel } from "./sales-order-item";
+import { SalesOrderItemModel } from '@/models/sales-order-item';
 
 type SalesOrderHeaderProps = {
     id: string;
     customerId: string;
     totalAmount: number;
     items: SalesOrderItemModel[];
-}
+};
 
-type SalesOrderHeaderPropsWithoutIdAndTotalAmount = Omit<SalesOrderHeaderProps, 'id'|'totalAmount'>;
+type SalesOrderHeaderPropsWithoutIdAndTotalAmount = Omit<SalesOrderHeaderProps, 'id' | 'totalAmount'>;
 
 type CreationPayload = {
     customer_id: SalesOrderHeaderProps['customerId'];
-    
-}
+};
 
 type CreationPayloadValidationResult = {
     hasError: boolean;
     error?: Error;
-}
+};
 
 export class SalesOrderHeaderModel {
-    constructor(private props: SalesOrderHeaderProps){}
+    constructor(private props: SalesOrderHeaderProps) {}
 
-    public static create(props: SalesOrderHeaderPropsWithoutIdAndTotalAmount): SalesOrderHeaderModel{
+    public static create(props: SalesOrderHeaderPropsWithoutIdAndTotalAmount): SalesOrderHeaderModel {
         return new SalesOrderHeaderModel({
             ...props,
             id: crypto.randomUUID(),
@@ -30,27 +29,27 @@ export class SalesOrderHeaderModel {
         });
     }
 
-    public static with(props:SalesOrderHeaderProps): SalesOrderHeaderModel{
-            return new SalesOrderHeaderModel(props);
-        }
+    public static with(props: SalesOrderHeaderProps): SalesOrderHeaderModel {
+        return new SalesOrderHeaderModel(props);
+    }
 
-    public get id(){
+    public get id() {
         return this.props.id;
     }
 
-    public get customerId(){
+    public get customerId() {
         return this.props.customerId;
     }
 
-    public get totalAmount(){
+    public get totalAmount() {
         return this.props.totalAmount;
     }
 
-    public get items(){
+    public get items() {
         return this.props.items;
     }
 
-    public set totalAmount(amount: number){
+    public set totalAmount(amount: number) {
         this.totalAmount = amount;
     }
 
@@ -69,17 +68,17 @@ export class SalesOrderHeaderModel {
         };
     }
 
-    private validateCustomerOnCreation(customerId: CreationPayload['customer_id']): CreationPayloadValidationResult{
-        if(!customerId){
+    private validateCustomerOnCreation(customerId: CreationPayload['customer_id']): CreationPayloadValidationResult {
+        if (!customerId) {
             return {
                 hasError: true,
                 error: new Error('Customer inválido')
             };
         }
-        
+
         return {
-                hasError: false
-        } 
+            hasError: false
+        };
     }
 
     private validateItemsOnCreation(items: SalesOrderHeaderProps['items']): CreationPayloadValidationResult {
@@ -108,31 +107,31 @@ export class SalesOrderHeaderModel {
         };
     }
 
-    public calculateTotalAmount(): number{
-        const totalAmount = 0;
-        this.items.forEach(item => {
-            this.totalAmount += (item.price as number) * (item.quantity as number);
+    public calculateTotalAmount(): number {
+        let totalAmount = 0;
+        this.items.forEach((item) => {
+            totalAmount += (item.price as number) * (item.quantity as number);
         });
-        return this.totalAmount;
+        return totalAmount;
     }
 
-    public calculateDiscount(): number{
-        this.totalAmount = this.calculateTotalAmount();
-        if(this.totalAmount > 30000){
-            const discount = this.totalAmount * (10/100)
-            this.totalAmount = this.totalAmount - (discount);
+    public calculateDiscount(): number {
+        let totalAmount = this.calculateTotalAmount();
+        if (totalAmount > 30000) {
+            const discount = totalAmount * (10 / 100);
+            totalAmount = totalAmount - discount;
         }
-        return this.totalAmount;
+        return totalAmount;
     }
 
-    public getProductsData(): {id: string, quantity: number}[]{
-        return this.items.map(item => ({
+    public getProductsData(): { id: string; quantity: number }[] {
+        return this.items.map((item) => ({
             id: item.productId,
             quantity: item.quantity
         }));
     }
 
-    public toStringifiedObject(): string{
+    public toStringifiedObject(): string {
         return JSON.stringify(this.props);
     }
 }

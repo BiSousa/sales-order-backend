@@ -1,5 +1,5 @@
-import { Customers } from "@models/sales";
+import { Customers } from '@models/sales';
 
-export interface CustomerService{
+export interface CustomerService {
     afterRead(customerList: Customers): Customers;
 }

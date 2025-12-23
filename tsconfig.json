@@ -22,7 +22,9 @@
     "rootDir": "./",
     // criação de alias
     "paths": {
-      "@models/*": ["./@cds-models/*/index.ts"]
+      "@models/*": ["./@cds-models/*/index.ts"],
+      "@/*": ["./srv/*"],
+      "@tests/*": ["./test/*"]
     }
   },
   // quais pastas são relevantes no seu projeto

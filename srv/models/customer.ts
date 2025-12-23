@@ -3,45 +3,45 @@ export type CustomerProps = {
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
-export class CustomerModel{
-    constructor(private props: CustomerProps){}
+export class CustomerModel {
+    constructor(private props: CustomerProps) {}
 
     // retorno de um CustomerModel com essas propriedades
-    public static with(props:CustomerProps){
+    public static with(props: CustomerProps) {
         return new CustomerModel(props);
     }
 
-    public get id(){
+    public get id() {
         return this.props.id;
     }
 
-    public get firstName(){
+    public get firstName() {
         return this.props.firstName;
     }
 
-    public get lastName(){
+    public get lastName() {
         return this.props.lastName;
     }
 
-    public get email(){
+    public get email() {
         return this.props.email;
     }
 
-    public setDefaultEmailDomain(): CustomerModel{
-        if (!this.props.email.includes('@')){
+    public setDefaultEmailDomain(): CustomerModel {
+        if (!this.props.email.includes('@')) {
             this.props.email = `${this.props.email}@gmail.com`;
         }
         return this;
     }
 
-    public toObject(): CustomerProps{
-        return{
+    public toObject(): CustomerProps {
+        return {
             id: this.props.id,
             firstName: this.props.firstName,
             lastName: this.props.lastName,
-            email: this.props.email,
-        }
+            email: this.props.email
+        };
     }
 }

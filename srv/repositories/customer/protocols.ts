@@ -1,5 +1,5 @@
-import { CustomerModel, CustomerProps } from "srv/models/customer";
+import { CustomerModel, CustomerProps } from '@/models/customer';
 
-export interface CustomerRepository{
-    findById(id: string):Promise<CustomerModel | null>;
+export interface CustomerRepository {
+    findById(id: string): Promise<CustomerModel | null>;
 }

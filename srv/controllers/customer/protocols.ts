@@ -1,6 +1,6 @@
-import { Customers } from "@cds-models";
-import { Customer } from "@models/sales";
+import { Customer } from '@models/sales';
+import { Customers } from '@cds-models';
 
-export interface CustomerController{
+export interface CustomerController {
     afterRead(customerList: Customer): Customers;
 }

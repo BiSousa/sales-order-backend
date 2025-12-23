@@ -1,4 +1,4 @@
-import { ProductModel } from "./product";
+import { ProductModel } from '@/models/product';
 
 type SalesOrderItemProps = {
     id: string;
@@ -6,69 +6,69 @@ type SalesOrderItemProps = {
     quantity: number;
     price: number;
     products: ProductModel[];
-}
+};
 
 type SalesOrderItemPropsWithoutId = Omit<SalesOrderItemProps, 'id'>;
 
 type CreationPayload = {
     product_id: SalesOrderItemProps['productId'];
     items: any[];
-}
+};
 
 type CreationPayloadValidationResult = {
     hasError: boolean;
     error?: Error;
-}
+};
 
-export class SalesOrderItemModel{
-    constructor(private props: SalesOrderItemProps){}
+export class SalesOrderItemModel {
+    constructor(private props: SalesOrderItemProps) {}
 
-    public static create(props: SalesOrderItemPropsWithoutId): SalesOrderItemModel{
+    public static create(props: SalesOrderItemPropsWithoutId): SalesOrderItemModel {
         return new SalesOrderItemModel({
             ...props,
             id: crypto.randomUUID()
-        })
+        });
     }
 
-    public get id(){
+    public get id() {
         return this.props.id;
     }
 
-    public get productId(){
+    public get productId() {
         return this.props.productId;
     }
 
-    public get quantity(){
+    public get quantity() {
         return this.props.quantity;
     }
 
-    public get price(){
+    public get price() {
         return this.props.price;
     }
 
-    public get products(){
+    public get products() {
         return this.props.products;
     }
 
-    public validateCreationPayload(params: CreationPayload): CreationPayloadValidationResult{
-        const product = this.products.find(product => product.id === params.product_id);
-        
-        if(!product){
+    public validateCreationPayload(params: CreationPayload): CreationPayloadValidationResult {
+        const product = this.products.find((product) => product.id === params.product_id);
+
+        if (!product) {
             return {
                 hasError: true,
                 error: new Error(`Produto ${params.product_id} não encontrado`)
-            }
+            };
         }
 
-        if(product.stock === 0){
+        if (product.stock === 0) {
             return {
                 hasError: true,
                 error: new Error(`Produto ${params.product_id} sem estoque disponível`)
-            }
+            };
         }
 
         return {
             hasError: false
-        }
+        };
     }
 }
