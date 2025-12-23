@@ -39,8 +39,12 @@ export default (service: Service) => {
     service.after('CREATE', 'SalesOrderHeaders', async (salesOrderHeaders: SalesOrderHeaders, request: Request) => {
         await salesOrderHeaderController.afterCreate(salesOrderHeaders, request.user);
     });
-    service.on('getSalesReportByDays', (request: Request) => {
+    service.on('getSalesReportByDays', async (request: Request) => {
         const days = request.data?.days || 7;
         return salesReportController.findByDays(days);
+    });
+    service.on('getSalesReportByCustomerId', async (request: Request) => {
+        const [{ id: customerId }] = request.params as unknown as { id: string }[];
+        return salesReportController.findByCustomerId(customerId);
     });
 };
