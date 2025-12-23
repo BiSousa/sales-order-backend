@@ -7,7 +7,7 @@ type SalesOrderHeaderProps = {
     items: SalesOrderItemModel[];
 }
 
-type SalesOrderHeaderPropsWithoutAmount = Omit<SalesOrderHeaderProps, 'id'|'totalAmount'>;
+type SalesOrderHeaderPropsWithoutIdAndTotalAmount = Omit<SalesOrderHeaderProps, 'id'|'totalAmount'>;
 
 type CreationPayload = {
     customer_id: SalesOrderHeaderProps['customerId'];
@@ -22,13 +22,17 @@ type CreationPayloadValidationResult = {
 export class SalesOrderHeaderModel {
     constructor(private props: SalesOrderHeaderProps){}
 
-    public static create(props: SalesOrderHeaderPropsWithoutAmount): SalesOrderHeaderModel{
+    public static create(props: SalesOrderHeaderPropsWithoutIdAndTotalAmount): SalesOrderHeaderModel{
         return new SalesOrderHeaderModel({
             ...props,
             id: crypto.randomUUID(),
             totalAmount: 0
         });
     }
+
+    public static with(props:SalesOrderHeaderProps): SalesOrderHeaderModel{
+            return new SalesOrderHeaderModel(props);
+        }
 
     public get id(){
         return this.props.id;
@@ -50,19 +54,19 @@ export class SalesOrderHeaderModel {
         this.totalAmount = amount;
     }
 
-    public validateCreationPayload(params:CreationPayload): CreationPayloadValidationResult{
-        const customerValidationResult = this.validateCreationPayload(params.customer_id);
-        if(customerValidationResult.hasError){
+    public validateCreationPayload(params: CreationPayload): CreationPayloadValidationResult {
+        const customerValidationResult = this.validateCustomerOnCreation(params.customer_id);
+        if (customerValidationResult.hasError) {
             return customerValidationResult;
         }
-        const itemsValidationResult = this.validateCreationPayload(this.items);
-        if(itemsValidationResult.hasError){
+
+        const itemsValidationResult = this.validateItemsOnCreation(this.items);
+        if (itemsValidationResult.hasError) {
             return itemsValidationResult;
         }
-        
         return {
-                hasError: false
-        } 
+            hasError: false
+        };
     }
 
     private validateCustomerOnCreation(customerId: CreationPayload['customer_id']): CreationPayloadValidationResult{
@@ -78,30 +82,30 @@ export class SalesOrderHeaderModel {
         } 
     }
 
-    private validateItemsOnCreation(items: SalesOrderHeaderProps['items']): CreationPayloadValidationResult{
-        if(!this.items || this.items?.length === 0){
+    private validateItemsOnCreation(items: SalesOrderHeaderProps['items']): CreationPayloadValidationResult {
+        if (!items || items?.length === 0) {
             return {
                 hasError: true,
                 error: new Error('Itens inválidos')
-            } 
+            };
         }
         const itemsErrors: string[] = [];
-        this.items.forEach(item => {
-            const validationResult = item.validateCreationPayload({product_id: item.productId});
-            if(validationResult.hasError){
+        items.forEach((item) => {
+            const validationResult = item.validateCreationPayload({ product_id: item.productId });
+            if (validationResult.hasError) {
                 itemsErrors.push(validationResult.error?.message as string);
             }
         });
-        if(itemsErrors.length > 0){
+        if (itemsErrors.length > 0) {
             const messages = itemsErrors.join('\n -');
-            return{
+            return {
                 hasError: true,
                 error: new Error(messages)
-            }
+            };
         }
-        return{
+        return {
             hasError: false
-        }
+        };
     }
 
     public calculateTotalAmount(): number{
@@ -119,5 +123,16 @@ export class SalesOrderHeaderModel {
             this.totalAmount = this.totalAmount - (discount);
         }
         return this.totalAmount;
+    }
+
+    public getProductsData(): {id: string, quantity: number}[]{
+        return this.items.map(item => ({
+            id: item.productId,
+            quantity: item.quantity
+        }));
+    }
+
+    public toStringifiedObject(): string{
+        return JSON.stringify(this.props);
     }
 }
