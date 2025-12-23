@@ -1,9 +1,9 @@
-import { SalesOrderHeaderController } from '@/controllers/sales-order-header/protocol';
+import { SalesOrderHeaderController } from '@/controllers/sales-order-header/protocols';
 import { SalesOrderHeaderControllerImpl } from '@/controllers/sales-order-header/implementation';
 import { salesOrderHeaderService } from '@/factories/services/sales-order-header';
 
-export const makeSalesOrderHeaderControle = (): SalesOrderHeaderController => {
+export const makeSalesOrderHeaderController = (): SalesOrderHeaderController => {
     return new SalesOrderHeaderControllerImpl(salesOrderHeaderService);
 };
 
-export const salesOrderHeaderController = makeSalesOrderHeaderControle();
+export const salesOrderHeaderController = makeSalesOrderHeaderController();
