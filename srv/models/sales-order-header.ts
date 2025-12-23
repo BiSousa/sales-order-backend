@@ -109,7 +109,7 @@ export class SalesOrderHeaderModel {
     }
 
     public calculateTotalAmount(): number{
-        let totalAmount = 0;
+        const totalAmount = 0;
         this.items.forEach(item => {
             this.totalAmount += (item.price as number) * (item.quantity as number);
         });

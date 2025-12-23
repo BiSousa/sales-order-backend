@@ -3,7 +3,7 @@ import { CustomerService } from "./protocols";
 import { CustomerModel } from "srv/models/customer";
 
 export class CustomerServiceImpl implements CustomerService{
-    public afterRead(customerList: Customers): Customers {
+    public afterRead(customerList: Customers): Customers { 
         // transforma o CustomerList para ser do modelo
         const customers = customerList.map(c => {
             const customer = CustomerModel.with({
