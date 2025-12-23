@@ -8,4 +8,5 @@ export type CreationPayloadValidationResult = {
 
 export interface SalesOrderHeaderService {
     beforeCreate(params: SalesOrderHeader): Promise<CreationPayloadValidationResult>;
+    afterCreate(params: SalesOrderHeader): Promise<void>;
 }
