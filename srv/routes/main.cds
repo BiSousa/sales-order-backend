@@ -2,7 +2,7 @@
 
 // traz o pacote inteiro que está no namespace sales
 using { sales } from '../../db/schema';
-using { db.types.SalesReport } from  '../../db/types';
+using { db.types.SalesReport, db.types.BulkCreateSalesOrder } from  '../../db/types';
 
 @requires: 'authenticated-user'
 service MainService {
@@ -18,4 +18,9 @@ service MainService {
 // Functions
 extend service MainService with {
     function getSalesReportByDays(days: SalesReport.Params:days) returns  array of SalesReport.ExpectedResult;
+}
+
+// Actions
+extend service MainService with {
+    action bulkCreateSalesOrders(payload: array of BulkCreateSalesOrder.Payload) returns array of BulkCreateSalesOrder.ExpectedResult;
 }
