@@ -13,6 +13,7 @@ import { SalesOrderLogModel } from '@/models/sales-order-log';
 import { SalesOrderLogRepository } from '@/repositories/sales-order-log/protocols';
 import { CreationPayloadValidationResult, SalesOrderHeaderService } from '@/services/sales-order-header/protocols';
 import { SalesOrderHeader, SalesOrderItem } from '@models/sales';
+import { User } from '@cds-models';
 
 export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
     constructor(
@@ -96,6 +97,25 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
         await this.salesOrderHeaderRepository.bulkCreate(bulkCreateHeaders);
         await this.afterCreate(headers, loggedUser);
         return this.serializeBulkCreateResult(bulkCreateHeaders);
+    }
+
+    public async cloneSalesOrder(id: string, loggedUser: User): Promise<CreationPayloadValidationResult> {
+        const header = await this.salesOrderHeaderRepository.findCompleteSalesOrderById(id);
+        if (!header) {
+            return {
+                hasError: true,
+                error: new Error('Pedido não encontrado')
+            };
+        }
+        const headerValidationResult = header.validateCreationPayload({
+            customer_id: header.customerId
+        });
+        if (headerValidationResult.hasError) {
+            return headerValidationResult;
+        }
+        await this.salesOrderHeaderRepository.bulkCreate([header]);
+        await this.afterCreate([header.toCreationObject()], loggedUser);
+        return this.serializeBulkCreateResult([header]);
     }
 
     private serializeBulkCreateResult(headers: SalesOrderHeaderModel[]): CreationPayloadValidationResult {
