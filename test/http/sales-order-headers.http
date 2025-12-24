@@ -100,3 +100,11 @@ Authorization: Basic joaozinho:inicial@12345
 GET http://{{localhost}}/SalesOrderHeaders?$search=example.net
 Content-Type: application/json
 Authorization: Basic joaozinho:inicial@12345
+
+// funcionalidade de clonar pedidos
+// achar um pedido que tenha o customer e items
+POST http://{{localhost}}/SalesOrderHeaders(colocar-id)
+Content-Type: application/json
+Authorization: Basic joaozinho:inicial@12345
+
+{}
