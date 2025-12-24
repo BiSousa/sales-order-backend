@@ -6,7 +6,9 @@ using { db.types.SalesReport, db.types.BulkCreateSalesOrder } from  '../../db/ty
 
 @requires: 'authenticated-user'
 service MainService {
-    entity SalesOrderHeaders as projection on sales.SalesOrderHeaders;
+    entity SalesOrderHeaders as projection on sales.SalesOrderHeaders actions{
+        action cloneSalesOrder() returns Boolean;
+    };
     entity Customers as projection on sales.Customers actions {
         function getSalesReportByCustomerId() returns array of SalesReport.ExpectedResult;
     };
