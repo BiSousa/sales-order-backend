@@ -20,6 +20,7 @@
     "baseUrl": "./",
     // qual a pasta inicial
     "rootDir": "./",
+    "sourceMap": true,
     // criação de alias
     "paths": {
       "@models/*": ["./@cds-models/*/index.ts"],
