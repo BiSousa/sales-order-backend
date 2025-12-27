@@ -47,6 +47,25 @@ modules:
         - node-modules
     requires:
       - sales-order-backend-db
+  
+  - name: sales-order-backend-app-router
+    type: approuter.js
+    path: app-router
+    parameters:
+      buildpack: nodejs_buildpack
+      disk-quota: 256M
+      memory: 256M
+    build-parameters:
+      ignore:
+        - node-modules
+    requires:
+      - name: sales-order-backend-uaa
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api
+          url: "~{srv-url}"
+          forwardAuthToken: true
 
 resources:
   - name: sales-order-backend-db
