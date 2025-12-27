@@ -5,6 +5,7 @@ using { sales } from '../../db/schema';
 using { db.types.SalesReport, db.types.BulkCreateSalesOrder } from  '../../db/types';
 
 @requires: 'authenticated-user'
+@path: '/sales-order'
 service MainService {
     entity SalesOrderHeaders as projection on sales.SalesOrderHeaders actions{
         action cloneSalesOrder() returns Boolean;
