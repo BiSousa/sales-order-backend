@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "A simple CAP project.",
   "dependencies": {
+    "@cap-js/hana": "^2.5.1",
     "@sap/cds": "^9",
+    "@sap/hana-client": "^2.27.19",
+    "@sap/xssec": "^4.12.1",
+    "@sweet-monads/either": "^3.3.1",
     "express": "^4",
-    "module-alias": "^2.2.3"
+    "module-alias": "^2.2.3",
+    "passport": "^0.7.0"
   },
   "devDependencies": {
     "@cap-js/cds-typer": "^0.38.0",
