@@ -12,7 +12,7 @@
     // faz a verificação se é nulo
     "strictNullChecks": true,
     // não permite que fique sem tipagem
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     // simplifica na importação de arquivos
     "esModuleInterop": true,
     // para onde o código transpilado vai
